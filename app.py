@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# --- 1. PŘÍPRAVA DAT (Už jsem to přepsal z obrázků, nemáš zač 😉) ---
+# 1. Data
 
 android_data = {
     'Month': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -35,7 +35,7 @@ df_ios['Platform'] = 'iOS'
 # Spojení do jednoho velkého dataframe
 df = pd.concat([df_android, df_ios])
 
-# --- 2. VÝPOČTY (Tady děláme magii s čísly) ---
+# 2. VÝPOČTY 
 
 # Total Costs
 df['Total Cost'] = df['Maintenance Cost'] + df['Acquisition Cost']
@@ -50,7 +50,7 @@ df['Conversion Rate %'] = (df['Courses Purchased'] / df['MAU']) * 100
 # Average Order Value (AOV) - Income / Courses Purchased
 df['Avg Course Price'] = df['Income'] / df['Courses Purchased']
 
-# --- 3. UI APLIKACE (Streamlit) ---
+# 3. UI APLIKACE
 
 st.set_page_config(page_title="Deep Dive Analysis", layout="wide")
 
@@ -64,7 +64,7 @@ selected_metric = st.sidebar.selectbox(
     ["Income", "Profit", "ROI %", "ARPU", "Conversion Rate %", "Courses Purchased", "MAU"]
 )
 
-# --- HLAVNÍ METRIKY (KPIs) ---
+# HLAVNÍ METRIKY KPIs
 st.header("1. Rychlý přehled (Totals)")
 col1, col2, col3 = st.columns(3)
 
@@ -84,7 +84,7 @@ with col3:
 
 st.info("💡 **První postřeh:** Android má vyšší absolutní čísla (více uživatelů), ale podívejme se na efektivitu níže.")
 
-# --- GRAFY ---
+# GRAFY
 st.header(f"2. Vývoj v čase: {selected_metric}")
 
 fig = px.line(df, x='Month', y=selected_metric, color='Platform', markers=True,
@@ -97,7 +97,7 @@ fig_scatter = px.scatter(df, x='MAU', y='Income', color='Platform', size='Profit
                          hover_data=['Month', 'ROI %'], title="Income vs MAU (Velikost bubliny = Profit)")
 st.plotly_chart(fig_scatter, use_container_width=True)
 
-# --- KPI SEKCE ---
+# KPI SEKCE
 st.header("3. Návrh KPI a Interpretace")
 col_kpi1, col_kpi2 = st.columns(2)
 
@@ -118,7 +118,7 @@ with col_kpi2:
     3. **Retention Rate (3-month)** - Klíčové pro dlouhodobý profit, kde iOS drtí Android.
     """)
 
-# --- DODATEČNÁ DATA & FUNNEL ---
+# DODATEČNÁ DATA & FUNNEL
 st.header("4. Funnel & Purchase Path Optimization")
 
 # Funnel Data
